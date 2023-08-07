@@ -19,7 +19,7 @@ public class ElasticSearchService {
     private ElasticsearchClient elasticsearchClient;
 
     public SearchResponse<Map> matchAllServices() throws IOException {
-
+        //Return all the records all the records in elasticsearch
       SearchResponse<Map> searchResponse = elasticsearchClient.search(s -> s.query(ElasticSearchUtil.supplier().get()), Map.class);
         System.out.println("elasticsearch query is "+ ElasticSearchUtil.supplier().get().toString());
       return searchResponse;
@@ -27,8 +27,18 @@ public class ElasticSearchService {
 
 
     public SearchResponse<Product> matchAllProductServices() throws IOException {
+        //Return all the records inside index products
         Supplier<Query> supplier = ElasticSearchUtil.supplier();
         SearchResponse<Product> searchResponse = elasticsearchClient.search(s -> s.index("products").query(ElasticSearchUtil.supplier().get()), Product.class);
+        System.out.println("elasticsearch query is "+ ElasticSearchUtil.supplier().get().toString());
+        return searchResponse;
+    }
+
+        //Match products with name
+    public SearchResponse<Product> matchProductByName(String name) throws IOException {
+        //Return all the records inside index products
+        Supplier<Query> supplier = ElasticSearchUtil.supplierWithName(name);
+        SearchResponse<Product> searchResponse = elasticsearchClient.search(s -> s.index("products").query(supplier.get()), Product.class);
         System.out.println("elasticsearch query is "+ ElasticSearchUtil.supplier().get().toString());
         return searchResponse;
     }

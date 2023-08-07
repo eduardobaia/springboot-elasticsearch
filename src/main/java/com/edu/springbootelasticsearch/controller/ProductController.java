@@ -62,4 +62,17 @@ public class ProductController {
         return ResponseEntity.ok(listHits.stream().map(Hit::source).toList());
     }
 
+
+    @GetMapping("/matchAllProductsByName/{name}")
+    public ResponseEntity<List<Product>> matchAllProductsByName(@PathVariable String name) throws IOException {
+
+        SearchResponse<Product> searchResponse = elasticSearchService.matchProductByName(name);
+        System.out.println(searchResponse.hits().hits().toString());
+        List<Hit<Product>> listHits = searchResponse.hits().hits();
+
+        return ResponseEntity.ok(listHits.stream().map(Hit::source).toList());
+    }
+
+
+
 }
